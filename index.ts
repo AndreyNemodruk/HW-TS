@@ -33,107 +33,88 @@ enum Grades {
   five,
 }
 
-class School {
-  private _directions: Direction[] = [];
+type LecturersType = {
+  id: string;
+  Name: string;
+  surname: string;
+  position: string;
+  company: string;
+  experience: string;
+  courses: string;
+  contacts: string;
+};
 
-  addDirection(direction: Direction) {
-    this._directions.push(direction);
+type AreasType = {
+  id: string;
+};
+
+class School {
+  // implement 'add area', 'remove area', 'add lecturer', and 'remove lecturer' methods
+
+  _areas: AreasType[] = [];
+  _lecturers: LecturersType[] = []; // Name, surname, position, company, experience, courses, contacts
+
+  get areas() {
+    return this._areas;
   }
 
-  get directions() {
-    return this._directions;
+  get lecturers() {
+    return this._lecturers;
   }
 }
 
-class Direction {
-  levels: Level[] = [];
-  private _name: DirectionNames;
+class Area {
+  // implement getters for fields and 'add/remove level' methods
+  _levels: Levels[] = [];
+  _name: string;
 
-  constructor(name: DirectionNames) {
+  constructor(name: string) {
     this._name = name;
-  }
-
-  get name() {
-    return this._name;
-  }
-
-  addLevel(level: Level) {
-    this.levels.push(level);
   }
 }
 
 class Level {
-  private _groups: Group[] = [];
-  private _name: Levels;
-  private _program: string;
+  // implement getters for fields and 'add/remove group' methods
 
-  constructor(name: Levels, program: string) {
-    this._name = name;
-    this._program = program;
-  }
+  _groups;
+  _name;
 
-  get name() {
-    return this._name;
-  }
-
-  get program() {
-    return this._program;
-  }
-
-  addGroup(group: Group) {
-    this._groups.push(group);
+  constructor(name, description) {
+    this.name = name;
+    this._description = description;
   }
 }
 
 class Group {
-  private _students: Student[] = [];
-  private _directionName: DirectionNames;
-  private _levelName: Levels;
+  // implement getters for fields and 'add/remove student' and 'set status' methods
 
-  get students() {
-    return this._students;
-  }
+  _area;
+  _status;
+  _students = []; // Modify the array so that it has a valid toSorted method*
 
-  get directionName() {
-    return this._directionName;
-  }
-
-  get levelName() {
-    return this._levelName;
-  }
-
-  constructor(directionName: DirectionNames, levelName: Levels) {
-    this._directionName = directionName;
-    this._levelName = levelName;
-  }
-
-  addStudent(student: Student) {
-    this._students.push(student);
+  constructor(directionName, levelName) {
+    this.directionName = directionName;
+    this.levelName = levelName;
   }
 
   showPerformance() {
-    const sortedStudents = this.students.sort(
+    const sortedStudents = this._students.toSorted(
       (a, b) => b.getPerformanceRating() - a.getPerformanceRating()
     );
-
     return sortedStudents;
   }
 }
 
 class Student {
-  private _grades: { [key in Subjects]: Grades } = {
-    Biology: 0,
-    Drawing: 0,
-    Geography: 0,
-    History: 0,
-    Literature: 0,
-  };
-  private _attendance: Attendance[] = [];
-  private _firstName: string;
-  private _lastName: string;
-  private _birthYear: number;
+  // implement 'set grade' and 'set visit' methods
 
-  constructor(firstName: string, lastName: string, birthYear: number) {
+  _firstName;
+  _lastName;
+  _birthYear;
+  _grades = []; // workName: mark
+  _visits = []; // lesson: present
+
+  constructor(firstName, lastName, birthYear) {
     this._firstName = firstName;
     this._lastName = lastName;
     this._birthYear = birthYear;
@@ -143,7 +124,7 @@ class Student {
     return `${this._lastName} ${this._firstName}`;
   }
 
-  set fullName(value: string) {
+  set fullName(value) {
     [this._lastName, this._firstName] = value.split(" ");
   }
 
@@ -151,51 +132,17 @@ class Student {
     return new Date().getFullYear() - this._birthYear;
   }
 
-  setGrade(subject: Subjects, grade: Grades) {
-    this._grades[subject] = grade;
-  }
-
-  markAttendance(present: Attendance) {
-    this._attendance.push(present);
-  }
-
   getPerformanceRating() {
     const gradeValues = Object.values(this._grades);
 
-    if (gradeValues.length === 0) return 0;
+    if (!gradeValues.length) return 0;
 
     const averageGrade =
-      gradeValues.reduce((sum: number, grade) => sum + grade, 0) /
-      gradeValues.length;
-
+      gradeValues.reduce((sum, grade) => sum + grade, 0) / gradeValues.length;
     const attendancePercentage =
-      (this._attendance.filter((present) => present === Attendance.present)
-        .length /
-        this._attendance.length) *
+      (this._visits.filter((present) => present).length / this._visits.length) *
       100;
 
     return (averageGrade + attendancePercentage) / 2;
   }
 }
-
-const vasya = new Student("Вася", "Пупкин", 2000);
-const kostya = new Student("Kocтя", "Сидоров", 2000);
-const tolik = new Student("Толик", "Иванов", 2000);
-
-vasya.markAttendance(Attendance.absent);
-vasya.markAttendance(Attendance.present);
-kostya.markAttendance(Attendance.absent);
-kostya.markAttendance(Attendance.absent);
-tolik.markAttendance(Attendance.present);
-tolik.markAttendance(Attendance.present);
-vasya.setGrade(Subjects.biology, Grades.four);
-vasya.setGrade(Subjects.geography, Grades.four);
-tolik.setGrade(Subjects.biology, Grades.five);
-tolik.setGrade(Subjects.geography, Grades.five);
-
-const group = new Group(DirectionNames.economic, Levels.first);
-group.addStudent(vasya);
-group.addStudent(tolik);
-group.addStudent(kostya);
-
-console.log(group.showPerformance());
