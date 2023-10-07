@@ -246,8 +246,8 @@ class Group {
 }
 
 class Student {
-  // implement 'set grade'
-  // 'set visit' methods
+  // implement 'set grade' ++
+  // 'set visit' methods ++
   private _id: string;
   private _firstName: string;
   private _lastName: string;
