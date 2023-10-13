@@ -1,34 +1,34 @@
 "use strict";
 var Formulas;
 (function (Formulas) {
-    Formulas["Rectangle"] = "Rectangle";
-    Formulas["Square"] = "Square";
-    Formulas["Circle"] = "Circle";
-    Formulas["Triangle"] = "Triangle";
+    Formulas["Rectangle"] = "S = a * b";
+    Formulas["Square"] = "S = a^2";
+    Formulas["Circle"] = "S = \u03C0 * r^2";
+    Formulas["Triangle"] = "S = 1/2(a * h)";
 })(Formulas || (Formulas = {}));
-class AbstractFigureWithPrint {
-    constructor(name, color, formula) {
+class Square {
+    constructor(name, color) {
         this.name = name;
         this.color = color;
-        this.formula = formula;
+        this.formula = Formulas.Square;
     }
     print() {
         console.log(this.formula);
     }
-}
-class Rectangle extends AbstractFigureWithPrint {
-    constructor(name, color) {
-        super(name, color, Formulas.Rectangle);
-    }
-    calculateArea(sideA, sideB) {
-        return sideA * sideB;
+    calculateArea({ side }) {
+        return Math.pow(side, 2);
     }
 }
-class Square extends AbstractFigureWithPrint {
+class Rectangle {
     constructor(name, color) {
-        super(name, color, Formulas.Square);
+        this.name = name;
+        this.color = color;
+        this.formula = Formulas.Rectangle;
     }
-    calculateArea(sideA, sideB) {
+    print() {
+        console.log(this.formula);
+    }
+    calculateArea({ sideA, sideB }) {
         return sideA * sideB;
     }
 }
@@ -36,8 +36,9 @@ class Circle {
     constructor(name, color) {
         this.name = name;
         this.color = color;
+        this.formula = Formulas.Circle;
     }
-    calculateArea(radius) {
+    calculateArea({ radius }) {
         return Math.PI * Math.pow(radius, 2);
     }
 }
@@ -45,14 +46,9 @@ class Triangle {
     constructor(name, color) {
         this.name = name;
         this.color = color;
+        this.formula = Formulas.Triangle;
     }
-    calculateArea(baseSideOrSideA, heightOrSideB, angle) {
-        if (!angle) {
-            return (baseSideOrSideA * heightOrSideB) / 2;
-        }
-        return (baseSideOrSideA * heightOrSideB * Math.sin(angle)) / 2;
+    calculateArea({ height, baseSide }) {
+        return (height * baseSide) / 2;
     }
 }
-const rectangle = new Rectangle("rect", "red");
-console.log(rectangle.calculateArea(10, 10));
-rectangle.print();
