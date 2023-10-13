@@ -52,3 +52,6 @@ class Triangle {
         return (height * baseSide) / 2;
     }
 }
+const aa = new Rectangle("aa", "aa");
+aa.print();
+console.log(aa.calculateArea({ sideA: 10, sideB: 20 }));

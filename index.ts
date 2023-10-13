@@ -13,18 +13,14 @@ interface ICircleData {
   radius: number;
 }
 
-interface ISquareData {
-  side: number;
-}
-
 interface ITriangleData {
-  baseSide: number;
-  height: number;
+  baseSideOrSideA: number;
+  heightOrSideB: number;
+  angle?: number;
 }
 
 interface IFigureData {
   regtangleData: IRegtangleData;
-  squareData: ISquareData;
   circleData: ICircleData;
   triangleData: ITriangleData;
 }
@@ -36,34 +32,38 @@ interface IFigure<T extends keyof IFigureData> {
   calculateArea: (data: IFigureData[T]) => number;
 }
 
-interface IFigureWithPrint {
-  print: () => void;
-}
+abstract class FigureWithPrint implements IFigure<"regtangleData"> {
+  formula: Formulas;
+  name: string;
+  color: string;
 
-class Square implements IFigure<"squareData">, IFigureWithPrint {
-  readonly formula: Formulas = Formulas.Square;
+  constructor(name: string, color: string, formula: Formulas) {
+    this.name = name;
+    this.color = color;
+    this.formula = formula;
+  }
 
-  constructor(readonly name: string, readonly color: string) {}
+  calculateArea({ sideA }: IRegtangleData): number {
+    return Math.pow(sideA, 2);
+  }
 
   print() {
     console.log(this.formula);
   }
+}
 
-  calculateArea({ side }: ISquareData) {
-    return Math.pow(side, 2);
+class Square extends FigureWithPrint {
+  constructor(name: string, color: string, formula: Formulas) {
+    super(name, color, formula);
   }
 }
 
-class Rectangle implements IFigure<"regtangleData">, IFigureWithPrint {
-  readonly formula: Formulas = Formulas.Rectangle;
-
-  constructor(readonly name: string, readonly color: string) {}
-
-  print() {
-    console.log(this.formula);
+class Rectangle extends FigureWithPrint {
+  constructor(name: string, color: string, formula: Formulas) {
+    super(name, color, formula);
   }
 
-  calculateArea({ sideA, sideB }: IRegtangleData) {
+  override calculateArea({ sideA, sideB }: IRegtangleData): number {
     return sideA * sideB;
   }
 }
@@ -83,7 +83,15 @@ class Triangle implements IFigure<"triangleData"> {
 
   constructor(readonly name: string, readonly color: string) {}
 
-  calculateArea({ height, baseSide }: ITriangleData): number {
-    return (height * baseSide) / 2;
+  calculateArea({ baseSideOrSideA, heightOrSideB }: ITriangleData): number;
+  calculateArea({
+    baseSideOrSideA,
+    heightOrSideB,
+    angle,
+  }: ITriangleData): number {
+    if (!angle) {
+      return (baseSideOrSideA * heightOrSideB) / 2;
+    }
+    return (baseSideOrSideA * heightOrSideB * Math.sin(angle)) / 2;
   }
 }
