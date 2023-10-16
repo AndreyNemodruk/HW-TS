@@ -6,27 +6,27 @@ var Formulas;
     Formulas["Circle"] = "S = \u03C0 * r^2";
     Formulas["Triangle"] = "S = 1/2(a * h)";
 })(Formulas || (Formulas = {}));
-class Square {
-    constructor(name, color) {
+class FigureWithPrint {
+    constructor(name, color, formula) {
         this.name = name;
         this.color = color;
-        this.formula = Formulas.Square;
+        this.formula = formula;
     }
     print() {
         console.log(this.formula);
+    }
+}
+class Square extends FigureWithPrint {
+    constructor(name, color, formula) {
+        super(name, color, formula);
     }
     calculateArea({ side }) {
         return Math.pow(side, 2);
     }
 }
-class Rectangle {
-    constructor(name, color) {
-        this.name = name;
-        this.color = color;
-        this.formula = Formulas.Rectangle;
-    }
-    print() {
-        console.log(this.formula);
+class Rectangle extends FigureWithPrint {
+    constructor(name, color, formula) {
+        super(name, color, formula);
     }
     calculateArea({ sideA, sideB }) {
         return sideA * sideB;
@@ -48,10 +48,14 @@ class Triangle {
         this.color = color;
         this.formula = Formulas.Triangle;
     }
-    calculateArea({ height, baseSide }) {
-        return (height * baseSide) / 2;
+    calculateArea({ baseSideOrSideA, heightOrSideB, angle, }) {
+        if (!angle) {
+            return (baseSideOrSideA * heightOrSideB) / 2;
+        }
+        return (baseSideOrSideA * heightOrSideB * Math.sin(angle)) / 2;
     }
 }
-const aa = new Rectangle("aa", "aa");
-aa.print();
-console.log(aa.calculateArea({ sideA: 10, sideB: 20 }));
+const square = new Square("s", "s", Formulas.Square);
+console.log(square.calculateArea({ side: 1 }));
+const regtangle = new Rectangle("r", "r", Formulas.Rectangle);
+console.log(regtangle.calculateArea({ sideA: 2, sideB: 2 }));
