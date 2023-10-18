@@ -1,113 +1,100 @@
-enum Formulas {
-  Rectangle = "S = a * b",
-  Square = "S = a^2",
-  Circle = "S = π * r^2",
-  Triangle = "S = 1/2(a * h)",
+// 1 start //
+interface User {
+  [key: string | number]: string | boolean;
 }
 
-interface IRegtangleData {
-  sideA: number;
-  sideB: number;
+const user: User = {
+  0: false,
+  1: true,
+  id: "0",
+  name: "Viktor",
+  isAdmin: true,
+};
+// 1 end //
+
+// 2 start //
+interface Configuration {
+  [key: string]: <K>(data: K) => K;
+}
+// 2 end //
+
+// 3 start //
+interface PseudoArray<K> {
+  [key: number]: K;
 }
 
-interface ISquareData {
-  side: number;
-}
+const myArr: PseudoArray<string> = {
+  0: "apple",
+  1: "orange",
+};
 
-interface ICircleData {
-  radius: number;
-}
+const myArr2: PseudoArray<User> = {
+  0: user,
+  1: { name: "Alex" },
+};
+// 3 end //
 
-interface ITriangleData {
-  baseSideOrSideA: number;
-  heightOrSideB: number;
-  angle?: number;
-}
-
-interface IFigureData {
-  regtangleData: IRegtangleData;
-  squareData: ISquareData;
-  circleData: ICircleData;
-  triangleData: ITriangleData;
-}
-
-interface IFigure<T extends keyof IFigureData> {
-  formula: Formulas;
+// 4 start //
+interface Fruits {
   name: string;
-  color: string;
-  calculateArea: (data: IFigureData[T]) => number;
+  [key: string]: string;
 }
 
-abstract class FigureWithPrint<T extends keyof IFigureData>
-  implements IFigure<T>
-{
-  formula: Formulas;
-  name: string;
-  color: string;
+const orange: Fruits = {
+  name: "orange",
+  colore: "orange",
+};
+// 4 end //
 
-  constructor(name: string, color: string, formula: Formulas) {
-    this.name = name;
-    this.color = color;
-    this.formula = formula;
-  }
-
-  abstract calculateArea(data: IFigureData[T]): number;
-
-  print() {
-    console.log(this.formula);
-  }
+// 5 start //
+interface Animal {
+  [key: string]: string | number;
 }
 
-class Square extends FigureWithPrint<"squareData"> {
-  constructor(name: string, color: string, formula: Formulas) {
-    super(name, color, formula);
-  }
-
-  calculateArea({ side }: ISquareData): number {
-    return Math.pow(side, 2);
-  }
+interface Cat extends Animal {
+  name: "cat";
+  say: "meow";
+  numberOfPaws: 4;
 }
 
-class Rectangle extends FigureWithPrint<"regtangleData"> {
-  constructor(name: string, color: string, formula: Formulas) {
-    super(name, color, formula);
-  }
+const cat: Cat = {
+  name: "cat",
+  say: "meow",
+  numberOfPaws: 4,
+};
+// 5 end //
 
-  override calculateArea({ sideA, sideB }: IRegtangleData): number {
-    return sideA * sideB;
-  }
+// 6 start //
+interface Numbers {
+  [key: number]: number | string;
 }
 
-class Circle implements IFigure<"circleData"> {
-  readonly formula: Formulas = Formulas.Circle;
+const validObj: Numbers = {
+  0: 20,
+  1: 30,
+  2: 40,
+  3: 50,
+};
 
-  constructor(readonly name: string, readonly color: string) {}
+const invalidObj: Numbers = {
+  0: 20,
+  1: 30,
+  2: "40",
+  3: 50,
+};
 
-  calculateArea({ radius }: ICircleData) {
-    return Math.PI * Math.pow(radius, 2);
-  }
-}
+function checklIsValidObj(data: Numbers): boolean {
+  let isValid = true;
 
-class Triangle implements IFigure<"triangleData"> {
-  readonly formula: Formulas = Formulas.Triangle;
-
-  constructor(readonly name: string, readonly color: string) {}
-
-  calculateArea({ baseSideOrSideA, heightOrSideB }: ITriangleData): number;
-  calculateArea({
-    baseSideOrSideA,
-    heightOrSideB,
-    angle,
-  }: ITriangleData): number {
-    if (!angle) {
-      return (baseSideOrSideA * heightOrSideB) / 2;
+  for (let i in data) {
+    if (typeof data[i] !== "number") {
+      isValid = false;
+      break;
     }
-    return (baseSideOrSideA * heightOrSideB * Math.sin(angle)) / 2;
   }
+  return isValid;
 }
 
-const square = new Square("s", "s", Formulas.Square);
-console.log(square.calculateArea({ side: 1 }));
-
-const regtangle = new Rectangle("r", "r", Formulas.Rectangle);
-console.log(regtangle.calculateArea({ sideA: 2, sideB: 2 }));
+console.log(checklIsValidObj(validObj));
+console.log(checklIsValidObj(invalidObj));
+// 6 end //
