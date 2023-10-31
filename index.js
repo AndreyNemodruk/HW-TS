@@ -1,51 +1,21 @@
 "use strict";
-const user = {
-    0: false,
-    1: true,
-    id: "0",
-    name: "Viktor",
-    isAdmin: true,
+// 3 end
+//4 start
+var EUser;
+(function (EUser) {
+    EUser["name"] = "name";
+    EUser["role"] = "role";
+})(EUser || (EUser = {}));
+/// *** ChatGPT
+const obj = {
+    name: "Alina",
+    age: 25,
 };
-const myArr = {
-    0: "apple",
-    1: "orange",
-};
-const myArr2 = {
-    0: user,
-    1: { name: "Alex" },
-};
-const orange = {
-    name: "orange",
-    colore: "orange",
-};
-const cat = {
-    name: "cat",
-    say: "meow",
-    numberOfPaws: 4,
-};
-const validObj = {
-    0: 20,
-    1: 30,
-    2: 40,
-    3: 50,
-};
-const invalidObj = {
-    0: 20,
-    1: 30,
-    2: "40",
-    3: 50,
-};
-function checklIsValidObj(data) {
-    let isValid = true;
-    for (let i in data) {
-        console.log(data[i]);
-        if (typeof data[i] !== "number") {
-            isValid = false;
-            break;
-        }
-    }
-    return isValid;
-}
-console.log(checklIsValidObj(validObj));
-console.log(checklIsValidObj(invalidObj));
-// 6 end //
+const convertObject = Object.getOwnPropertyDescriptors(obj);
+console.log(convertObject);
+/// ***
+// 5 end
+// 6 start
+function f(param) { }
+let a;
+// 6 end
