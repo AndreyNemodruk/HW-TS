@@ -6,7 +6,7 @@ type DeepReadonly<T> = {
 
 // 2 start
 type DeepRequireReadonly<T> = {
-  readonly [K in keyof T]-?: T[K];
+  readonly [K in keyof T]-?: DeepRequireReadonly<T[K]>;
 };
 // 2 end
 
@@ -46,9 +46,19 @@ console.log(convertObject);
 // 6 start
 function f(param: number[]): void {}
 function f2(param: string[]): void {}
+function f3(param: number): void {}
+function f4(param: string): void {}
 
-type ParamType<T> = T extends (param: (infer P)[]) => void ? P : undefined;
+type ExtractTypeFromArray<T> = T extends (infer K)[] ? K : never;
+
+type ParamType<T> = T extends (param: infer P) => void
+  ? P extends Array<any>
+    ? ExtractTypeFromArray<P>
+    : P
+  : undefined;
 
 let a: ParamType<typeof f>;
 let b: ParamType<typeof f2>;
+let c: ParamType<typeof f3>;
+let d: ParamType<typeof f4>;
 // 6 end
