@@ -55,7 +55,7 @@ type ParamType<T> = T extends (param: infer P) => void
   ? P extends Array<any>
     ? ExtractTypeFromArray<P>
     : P
-  : undefined;
+  : never;
 
 let a: ParamType<typeof f>;
 let b: ParamType<typeof f2>;
