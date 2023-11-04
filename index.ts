@@ -1,64 +1,33 @@
-// 1 start
-type DeepReadonly<T> = {
-  readonly [K in keyof T]: DeepReadonly<T[K]>;
-};
-// 1 end
+import { categories, films } from "./data/data";
+import { CategoryList } from "./lists/CategoryList";
+import { FilmsList } from "./lists/FilmsList";
+import { EAwards } from "./types/types";
 
-// 2 start
-type DeepRequireReadonly<T> = {
-  readonly [K in keyof T]-?: DeepRequireReadonly<T[K]>;
-};
-// 2 end
+const filmsList = new FilmsList(films);
+const category = new CategoryList(categories);
 
-// 3 start
-type UpperCaseKeys<T> = {
-  [K in keyof T as Uppercase<string & K>]: T[K];
-};
-// 3 end
+// category.applySearchValue("филь");
+// console.log(category.getFilteredFilms());
 
-//4 start
-enum EUser {
-  name = "name",
-  role = "role",
-}
+// filmsList.applyFiltersValue({
+//   yearFrom: 2022,
+//   yearTo: 2023,
+//   rating: null,
+//   awards: EAwards.EmmyAwards,
+// });
 
-type User = {
-  [K in keyof typeof EUser as `get-${K}`]: () => void;
-};
-// 4 end
+// filmsList.applyFiltersValue({
+//   yearFrom: 2016,
+//   yearTo: 2023,
+//   rating: null,
+//   awards: EAwards.BAFTAAwards,
+// });
 
-// 5 start
-type ObjectToPropertyDescriptor<T extends Object> = {
-  [K in keyof T]: PropertyDescriptor;
-};
+filmsList.applyFiltersValue({
+  yearFrom: 2016,
+  yearTo: 2023,
+  rating: 3,
+  awards: null,
+});
 
-const obj = {
-  name: "Alina",
-  age: 25,
-};
-
-const convertObject: ObjectToPropertyDescriptor<typeof obj> =
-  Object.getOwnPropertyDescriptors(obj);
-
-console.log(convertObject);
-// 5 end
-
-// 6 start
-function f(param: number[]): void {}
-function f2(param: string[]): void {}
-function f3(param: number): void {}
-function f4(param: string): void {}
-
-type ExtractTypeFromArray<T> = T extends (infer K)[] ? K : never;
-
-type ParamType<T> = T extends (param: infer P) => void
-  ? P extends Array<any>
-    ? ExtractTypeFromArray<P>
-    : P
-  : never;
-
-let a: ParamType<typeof f>;
-let b: ParamType<typeof f2>;
-let c: ParamType<typeof f3>;
-let d: ParamType<typeof f4>;
-// 6 end
+console.log(filmsList.getFilteredFilms());
