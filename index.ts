@@ -1,33 +1,39 @@
-import { categories, films } from "./data/data";
-import { CategoryList } from "./lists/CategoryList";
-import { FilmsList } from "./lists/FilmsList";
-import { EAwards } from "./types/types";
+import { AbstractCategoriesList } from "./lists/AbstractCategoriesList";
+import { AbstractFilmsList } from "./lists/AbstractFilmsList";
+import {
+  FiltersData,
+  ICategory,
+  IFilm,
+  SearchByTextFilterType,
+} from "./types/types";
 
-const filmsList = new FilmsList(films);
-const category = new CategoryList(categories);
+class Films extends AbstractFilmsList {
+  applyFiltersValue(filterSettings: FiltersData): void {
+    throw new Error("Method not implemented.");
+  }
+  filterByText(): IFilm[] {
+    throw new Error("Method not implemented.");
+  }
+  filterByYears(): IFilm[] {
+    throw new Error("Method not implemented.");
+  }
+  filetrByAwards(): IFilm[] {
+    throw new Error("Method not implemented.");
+  }
+  filetrByRating(): IFilm[] {
+    throw new Error("Method not implemented.");
+  }
+}
 
-// category.applySearchValue("филь");
-// console.log(category.getFilteredFilms());
+const films = new Films([]);
 
-// filmsList.applyFiltersValue({
-//   yearFrom: 2022,
-//   yearTo: 2023,
-//   rating: null,
-//   awards: EAwards.EmmyAwards,
-// });
+class Categories extends AbstractCategoriesList {
+  applySearchValue(filterSettings: SearchByTextFilterType): void {
+    throw new Error("Method not implemented.");
+  }
+  filterByText(): ICategory[] {
+    throw new Error("Method not implemented.");
+  }
+}
 
-// filmsList.applyFiltersValue({
-//   yearFrom: 2016,
-//   yearTo: 2023,
-//   rating: null,
-//   awards: EAwards.BAFTAAwards,
-// });
-
-filmsList.applyFiltersValue({
-  yearFrom: 2016,
-  yearTo: 2023,
-  rating: 3,
-  awards: null,
-});
-
-console.log(filmsList.getFilteredFilms());
+const categories = new Categories([]);
