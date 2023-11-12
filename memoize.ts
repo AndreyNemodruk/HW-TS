@@ -1,6 +1,6 @@
 import { execTime } from "./exec";
 
-function memo<T, A extends any[], R extends number>(
+function Memoize<T, A extends any[], R extends number>(
   originalMethod: (...args: A) => R,
   context: ClassMethodDecoratorContext<T, (...args: A) => R>
 ) {
@@ -24,7 +24,7 @@ function memo<T, A extends any[], R extends number>(
 
 class Сalculations {
   @execTime
-  @memo
+  @Memoize
   complicatedCalculation(a: number, b: number): number {
     for (let x = 0; x++ < 2000000000; ) {}
     return a + b;

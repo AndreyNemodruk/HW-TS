@@ -1,4 +1,4 @@
-function debounce(time: number) {
+function Debounce(time: number) {
   return function <T, A extends any[]>(
     originalMethod: (...args: A) => void,
     context: ClassMethodDecoratorContext<T, (...args: A) => void>
@@ -13,7 +13,7 @@ function debounce(time: number) {
 }
 
 class Api {
-  @debounce(50)
+  @Debounce(50)
   request() {
     console.log("request send");
   }
