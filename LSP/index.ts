@@ -60,3 +60,7 @@ function getAreaFigure(figure: AbstractFigure) {
 function getPerimeter(figure: AbstractFigure) {
   return figure.getPerimeter();
 }
+
+const ariaCircle = getAreaFigure(circle);
+const ariaSquare = getAreaFigure(square);
+const ariaTriangle = getAreaFigure(triangle);
