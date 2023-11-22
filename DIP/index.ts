@@ -13,19 +13,19 @@ class MessagesSender implements IMessagesSender {
 
 class Telegram extends AbstractMessenger {
   sendMessage(message: string): void {
-    console.log(message);
+    console.log("telegram" + message);
   }
 }
 
 class Viber extends AbstractMessenger {
   sendMessage(message: string): void {
-    console.log(message);
+    console.log("viber" + message);
   }
 }
 
 class WhatsApp extends AbstractMessenger {
   sendMessage(message: string): void {
-    console.log(message);
+    console.log("whatsApp" + message);
   }
 }
 
@@ -37,6 +37,6 @@ const messagesSenderTelegram = new MessagesSender(telegram);
 const messagesSenderViber = new MessagesSender(viber);
 const messagesSenderWhatsApp = new MessagesSender(whatsApp);
 
-messagesSenderTelegram.sendMessage("telegram");
-messagesSenderViber.sendMessage("viber");
-messagesSenderWhatsApp.sendMessage("whatsApp");
+messagesSenderTelegram.sendMessage("message");
+messagesSenderViber.sendMessage("message");
+messagesSenderWhatsApp.sendMessage("message");
