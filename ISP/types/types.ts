@@ -16,18 +16,15 @@ export interface IUser {
   id: number;
   assignedTasks: ITask[];
   name: string;
-  role: ERole;
+  assignTask(task: ITask, developer: IDeveloper): void;
+  completeTask(task: ITask): void;
 }
 
 export interface IManager extends IUser {
-  createTask(task: ITask): void;
-  assignTask(task: ITask, developer: IDeveloper): void;
-  completeTask(task: ITask): void;
   role: ERole.Manager;
+  createTask(task: ITask): void;
 }
 
 export interface IDeveloper extends IUser {
-  assignTask(task: ITask, developer: IDeveloper): void;
-  completeTask(task: ITask): void;
   role: ERole.Developer;
 }

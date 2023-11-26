@@ -1,3 +1,4 @@
+import { AbstractUser } from "./AbstractUser";
 import { IUser } from "./types/types";
 import { ERole, IDeveloper, IManager, ITask } from "./types/types";
 
@@ -26,21 +27,20 @@ class Task implements ITask {
   }
 }
 
-class Manager implements IManager {
-  role: ERole.Manager = ERole.Manager;
-  id: number;
-  assignedTasks: ITask[];
-  name: string;
+/* можливо таким чином з абстрактним класом юзера буде трохи краще, але в цілому ідея була така,
+що assignTask, completeTask у двох різних інтерфейсах не просто дублюються, а просто мають різні реалізації, 
+наприклад assignTask може мати різні перевірки щодо підлеглих на яких призначається таска(девелопер назначає на своʼїх підлеглих,
+або робить assign на менеджера і таска переходить в статус wait for info), метод completeTask, також 
+може мати різні статуси, перевірки і причини з яких ця таска помічається як виконана). Метод createTask доступний при цьому тільки менеджеру.
+ */
 
-  constructor({ id, name, assignedTasks }: IUser) {
-    this.id = id;
-    this.name = name;
-    this.assignedTasks = assignedTasks;
-  }
+class Manager extends AbstractUser implements IManager {
+  role: ERole.Manager = ERole.Manager;
 
   createTask(task: ITask): void {
     throw new Error("Method not implemented.");
   }
+
   assignTask(task: ITask, developer: IDeveloper): void {
     throw new Error("Method not implemented.");
   }
@@ -49,18 +49,8 @@ class Manager implements IManager {
   }
 }
 
-class Developer implements IDeveloper {
+class Developer extends AbstractUser implements IDeveloper {
   role: ERole.Developer = ERole.Developer;
-  id: number;
-  assignedTasks: ITask[];
-  name: string;
-
-  constructor({ id, name, assignedTasks }: IUser) {
-    this.id = id;
-    this.name = name;
-    this.assignedTasks = assignedTasks;
-  }
-
   assignTask(task: ITask, developer: IDeveloper): void {
     throw new Error("Method not implemented.");
   }
